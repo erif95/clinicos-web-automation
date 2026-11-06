@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lindenhof Family Practice · Reception</title>
+<style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --ink: #1d2733; --muted: #5d6b7a; --line: #dde3e9;
+  --accent: #0f766e; --accent-ink: #ffffff; --danger: #b42318; --danger-bg: #fef3f2;
+  --ok: #067647; --ok-bg: #ecfdf3; --focus: #2563eb;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+header { background: var(--card); border-bottom: 1px solid var(--line); padding: 14px 24px; display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+header h1 { font-size: 18px; margin: 0; }
+header .sub { color: var(--muted); font-size: 13px; }
+header .version { margin-left: auto; color: var(--muted); font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 2px 10px; }
+main { max-width: 1120px; margin: 24px auto; padding: 0 16px; display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: start; }
+@media (max-width: 860px) { main { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+.card h2 { font-size: 16px; margin: 0 0 14px; }
+.field { margin-bottom: 12px; }
+.field label { display: block; font-weight: 600; font-size: 13px; margin-bottom: 4px; }
+.field input, .field select { width: 100%; padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; font: inherit; background: #fff; color: inherit; }
+.field input:focus, .field select:focus { outline: 2px solid var(--focus); outline-offset: 1px; }
+.field.invalid input, .field.invalid select { border-color: var(--danger); }
+.error { color: var(--danger); font-size: 12.5px; margin: 4px 0 0; min-height: 0; }
+.error:empty { display: none; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+button { font: inherit; cursor: pointer; }
+.primary { width: 100%; background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 6px; padding: 10px; font-weight: 600; margin-top: 4px; }
+.primary:hover { filter: brightness(1.08); }
+.notice { margin: 0 0 14px; padding: 10px 12px; border-radius: 6px; font-size: 13.5px; }
+.notice:empty { display: none; }
+.notice.ok { background: var(--ok-bg); color: var(--ok); border: 1px solid #abefc6; }
+.notice.info { background: #eff8ff; color: #175cd3; border: 1px solid #b2ddff; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); border-bottom: 1px solid var(--line); padding: 8px 6px; }
+td { border-bottom: 1px solid var(--line); padding: 9px 6px; vertical-align: middle; }
+td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.cancel { background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: 13px; color: var(--danger); }
+.cancel:hover { background: var(--danger-bg); }
+.empty { color: var(--muted); font-size: 14px; padding: 10px 0 0; }
+footer { max-width: 1120px; margin: 0 auto 32px; padding: 0 16px; color: var(--muted); font-size: 12.5px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+footer button { background: none; border: 1px solid var(--line); border-radius: 6px; padding: 3px 10px; color: var(--muted); }
+.whatsnew { font-size: 13px; color: var(--muted); margin: 0 0 14px; padding-left: 18px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Lindenhof Family Practice</h1>
+  <span class="sub">Reception · Appointments</span>
+  <span class="version" data-testid="app-version">Version 1.0</span>
+</header>
+<main>
+  <form class="card" id="booking-form" novalidate data-testid="booking-form" aria-labelledby="form-title">
+    <h2 id="form-title">New appointment</h2>
+    <div class="field">
+      <label for="patient-name">Patient name</label>
+      <input id="patient-name" name="name" autocomplete="off" data-testid="patient-name">
+      <p class="error" id="error-name" data-testid="error-name" role="alert"></p>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="dob">Date of birth</label>
+        <input id="dob" name="dob" type="date" data-testid="dob">
+        <p class="error" id="error-dob" data-testid="error-dob" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="off" data-testid="email">
+        <p class="error" id="error-email" data-testid="error-email" role="alert"></p>
+      </div>
+    </div>
+    <div class="field">
+      <label for="doctor">Doctor</label>
+      <select id="doctor" name="doctor" data-testid="doctor"></select>
+      <p class="error" id="error-doctor" data-testid="error-doctor" role="alert"></p>
+    </div>
+    <div class="field">
+      <label for="reason">Reason for visit</label>
+      <select id="reason" name="reason" data-testid="reason"></select>
+      <p class="error" id="error-reason" data-testid="error-reason" role="alert"></p>
+    </div>
+    <div class="row2">
+      <div class="field">
+        <label for="date">Date</label>
+        <input id="date" name="date" type="date" data-testid="date">
+        <p class="error" id="error-date" data-testid="error-date" role="alert"></p>
+      </div>
+      <div class="field">
+        <label for="time">Time</label>
+        <select id="time" name="time" data-testid="time"></select>
+        <p class="error" id="error-time" data-testid="error-time" role="alert"></p>
+      </div>
+    </div>
+    <button class="primary" type="submit" data-testid="book-button">Book appointment</button>
+  </form>
+
+  <section class="card" aria-labelledby="list-title">
+    <h2 id="list-title">Upcoming appointments</h2>
+    
+    <div class="notice" id="notice" role="status" data-testid="notice"></div>
+    <table data-testid="appointments-table">
+      <thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Doctor</th><th>Reason</th><th aria-label="Actions"></th></tr></thead>
+      <tbody id="appointments"></tbody>
+    </table>
+    <p class="empty" id="empty" data-testid="empty-state" hidden>No upcoming appointments.</p>
+  </section>
+</main>
+<footer>
+  <span>All times are practice time (Europe/Berlin). Demo data is stored in this browser only; all names are fictional.</span>
+  <button type="button" id="reset" data-testid="reset-demo">Reset demo data</button>
+</footer>
+<script>
+(()=>{"use strict";const C="Europe/Berlin",N="lindenhof.appointments.v1",w=[{id:"weber",name:"Dr. Anna Weber"},{id:"yilmaz",name:"Dr. Murat Y\u0131lmaz"}],Y=["Check-up","Vaccination","Consultation","Follow-up"],p=t=>String(t).padStart(2,"0"),Z=t=>`${p(Math.floor(t/60))}:${p(t%60)}`,u=t=>(w.find(e=>e.id===t)||{name:t}).name,z=new Intl.DateTimeFormat("en-GB",{timeZone:C,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"});function I(t){const e={};for(const n of z.formatToParts(new Date(t)))e[n.type]=n.value;return{y:+e.year,mo:+e.month,d:+e.day,h:+e.hour%24,mi:+e.minute,s:+e.second}}function rt(t){const e=t-(t%1e3+1e3)%1e3,n=I(e);return Date.UTC(n.y,n.mo-1,n.d,n.h,n.mi,n.s)-e}function f(t,e){return Date.parse(`${t}T${e}:00+01:00`)}const H=new Intl.DateTimeFormat("en-GB",{timeZone:C,weekday:"short",day:"numeric",month:"short",year:"numeric"}),G=new Intl.DateTimeFormat("en-GB",{timeZone:C,hour:"2-digit",minute:"2-digit",hourCycle:"h23"}),h=t=>H.format(new Date(t)),l=t=>G.format(new Date(t));function y(){const t=I(Date.now());return`${t.y}-${p(t.mo)}-${p(t.d)}`}function S(t,e){const[n,o,i]=t.split("-").map(Number);return new Date(Date.UTC(n,o-1,i+e)).toISOString().slice(0,10)}function X(t){const[e,n,o]=t.split("-").map(Number);return new Date(Date.UTC(e,n-1,o)).getUTCDay()}const T=t=>[0,6].includes(X(t));function _(t,e){let n=t,o=0;for(;o<e;)n=S(n,1),T(n)||o++;return n}function M(){const t=[];for(let e=480;e<=1080-15;e+=15)t.push(Z(e));return t}const j=/^[A-Za-z][A-Za-z \-]{1,59}$/,W=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;function J(t,e){const n={},o=y(),i=t.name.trim();i?j.test(i)||(n.name="Please enter a valid name."):n.name="Please enter the patient name.",t.dob?t.dob>o&&(n.dob="Date of birth cannot be in the future."):n.dob="Please enter the date of birth.";const c=t.email.trim();if(c?W.test(c)||(n.email="Please enter a valid email address."):n.email="Please enter an email address.",t.doctor||(n.doctor="Please choose a doctor."),t.reason||(n.reason="Please choose a reason for the visit."),t.date?T(t.date)?n.date="The practice is closed on weekends.":t.date>S(o,180)&&(n.date=`Appointments can be booked up to ${180} days ahead.`):n.date="Please choose a date.",t.time?M().includes(t.time)||(n.time="Please choose a time within opening hours."):n.time="Please choose a time.",!Object.keys(n).length){const r=f(t.date,t.time),A=r+30*6e4,g=e.find(d=>d.doctor===t.doctor&&d.start===r);g&&(n.time=`${u(t.doctor)} already has an appointment at ${l(g.start)} on that day.`)}return n}function v(){const t=y();return[{id:"A-1001",patient:"Lena Hoffmann",dob:"1988-04-12",email:"lena.hoffmann@example.com",doctor:"weber",reason:"Check-up",start:f(_(t,1),"10:00")},{id:"A-1002",patient:"Tobias Kr\xFCger",dob:"1975-09-30",email:"t.krueger@example.com",doctor:"yilmaz",reason:"Vaccination",start:f(_(t,3),"14:30")}]}function b(t){try{localStorage.setItem(N,JSON.stringify(t))}catch{}}function K(){try{const e=JSON.parse(localStorage.getItem(N));if(Array.isArray(e))return e}catch{}const t=v();return b(t),t}let s=K();const V=()=>`A-${1+Math.max(1e3,...s.map(t=>Number(String(t.id).slice(2))||0))}`,a=t=>document.getElementById(t),$=a("booking-form"),q=a("time"),P=a("date"),O=a("doctor"),k=a("notice"),x=a("appointments"),Q=a("empty"),L=["name","dob","email","doctor","reason","date","time"],F={name:"patient-name",dob:"dob",email:"email",doctor:"doctor",reason:"reason",date:"date",time:"time"};function m(t,e){const n=document.createElement("option");return n.value=t,n.textContent=e,n}O.replaceChildren(m("","Choose a doctor"),...w.map(t=>m(t.id,t.name))),a("reason").replaceChildren(m("","Choose a reason"),...Y.map(t=>m(t,t)));function B(){q.replaceChildren(m("","Choose a time"),...M().map(t=>m(t,t)))}B(),a("dob").max=y(),P.max=S(y(),180);function U(){}P.addEventListener("change",U),O.addEventListener("change",U);function D(t,e){k.textContent=t,k.className=`notice ${e}`}function R(t){for(const e of L)a(`error-${e}`).textContent=t[e]||"",a(F[e]).closest(".field").classList.toggle("invalid",Boolean(t[e])),a(F[e]).setAttribute("aria-invalid",t[e]?"true":"false")}function E(){const t=[...s].sort((e,n)=>e.start-n.start);x.replaceChildren(),t.forEach((e,n)=>{const o=document.createElement("tr");o.dataset.testid="appointment-row";const i=[["appt-date",h(e.start)],["appt-time",l(e.start)],["appt-patient",e.patient],["appt-doctor",u(e.doctor)],["appt-reason",e.reason]];for(const[A,g]of i){const d=document.createElement("td");d.dataset.testid=A,(A==="appt-date"||A==="appt-time")&&(d.className="num"),d.textContent=g,o.append(d)}const c=document.createElement("td"),r=document.createElement("button");r.type="button",r.className="cancel",r.textContent="Cancel",r.dataset.testid="cancel-appointment",r.setAttribute("aria-label",`Cancel appointment for ${e.patient} on ${h(e.start)} at ${l(e.start)}`),r.addEventListener("click",()=>tt(n)),c.append(r),o.append(c),x.append(o)}),Q.hidden=t.length>0}function tt(t){const[e]=s.splice(t,1);b(s),E(),e&&D(`Cancelled: ${e.patient}, ${h(e.start)} at ${l(e.start)} with ${u(e.doctor)}.`,"info")}$.addEventListener("submit",t=>{t.preventDefault();const e=new FormData($),n=Object.fromEntries(L.map(c=>[c,String(e.get(c)||"")])),o=J(n,s);if(R(o),Object.keys(o).length){D("","ok");return}const i={id:V(),patient:n.name.trim(),dob:n.dob,email:n.email.trim(),doctor:n.doctor,reason:n.reason,start:f(n.date,n.time)};s.push(i),b(s),E(),D(`Booked: ${i.patient} with ${u(i.doctor)} on ${h(i.start)} at ${l(i.start)}.`,"ok"),$.reset(),B()}),a("reset").addEventListener("click",()=>{s=v(),b(s),E(),R({}),D("Demo data was reset.","info")}),E()})();
+</script>
+</body>
+</html>
